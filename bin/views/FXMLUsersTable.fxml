@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="rootPane" prefHeight="456.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UsersTableController">
+   <children>
+      <TableView fx:id="tv_users" layoutY="-14.0" prefHeight="456.0" prefWidth="610.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="col_id" prefWidth="120.0" text="ID" />
+          <TableColumn fx:id="col_username" prefWidth="160.0" text="USERNAME" />
+            <TableColumn fx:id="col_mobile" prefWidth="160.0" text="MOBILE" />
+            <TableColumn fx:id="col_email" prefWidth="195.0" text="EMAIL" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

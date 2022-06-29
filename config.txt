@@ -1,0 +1,1 @@
+{"nDaysCanKeepBook":15,"finePerDay":2.2,"username":"adminstrator","password":"admin"}

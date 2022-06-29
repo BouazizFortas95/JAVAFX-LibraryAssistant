@@ -1,0 +1,9 @@
+.jfx-button{
+	-fx-background-color: #164A6B;
+	-fx-text-fill: white;
+}
+
+.jfx-text-field{
+	-fx-font-family: impact;
+	-fx-font-size: 16px;
+}

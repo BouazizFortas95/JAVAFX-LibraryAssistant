@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:id="rootPane" prefHeight="456.0" prefWidth="750.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controllers.BooksTableController">
+   <children>
+      <TableView fx:id="tv_books" layoutY="-14.0" prefHeight="456.0" prefWidth="750.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="col_id" prefWidth="120.0" text="ID" />
+          <TableColumn fx:id="col_title" minWidth="0.0" prefWidth="160.0" text="TITLE" />
+            <TableColumn fx:id="col_author" prefWidth="160.0" text="AUTHOR" />
+            <TableColumn fx:id="col_publisher" prefWidth="160.0" text="PUBLISHER" />
+            <TableColumn fx:id="col_availability" prefWidth="137.0" text="AVAILABILITY" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
