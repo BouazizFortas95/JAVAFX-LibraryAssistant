@@ -13,7 +13,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/views/FXMLMainApp.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/views/FXMLLogin.fxml"));
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styles/application.css").toExternalForm());
 			primaryStage.setScene(scene);
@@ -27,7 +27,7 @@ public class Main extends Application {
 				}
 			}).start();
 			
-			Setting.getSettings();
+			Setting.initConfig();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="libs/jfoenix-8.0.10.jar"/>
 	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.49.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
@@ -29,7 +31,7 @@ public class Setting {
 		nDaysCanKeepBook = 14;
 		finePerDay = 2;
 		username = "admin";
-		password = "admin";
+		setPassword("admin");
 	}
 
 	/**
@@ -84,8 +86,13 @@ public class Setting {
 	/**
 	 * @param password the password to set
 	 */
+	@SuppressWarnings("deprecation")
 	public void setPassword(String password) {
-		this.password = password;
+		if (password.length()<=16) {
+			this.password = DigestUtils.shaHex(password);
+		} else {
+			this.password = password;
+		}
 	}
 	
 	public static void initConfig() {

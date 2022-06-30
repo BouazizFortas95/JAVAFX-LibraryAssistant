@@ -228,7 +228,7 @@ public class MainAppController implements Initializable {
 			} else {
 				Alert alert_err = new Alert(Alert.AlertType.ERROR);
 				alert_err.setHeaderText(null);
-				alert_err.setTitle("Successful");
+				alert_err.setTitle("Error");
 				alert_err.setContentText("Issue Operation is Faild!!");
 				alert_err.showAndWait();
 			}
