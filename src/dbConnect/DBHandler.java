@@ -20,10 +20,13 @@ public final class DBHandler extends DBConfigs {
 	private static ResultSet rs = null;
 	
 	private DBHandler() {
-		getConnection();
-		setupBooksTableIntoDB();
-		setupUsersTableIntoDB();
-		setupIssueTableIntoDB();
+		if (getConnection()) {
+			setupBooksTableIntoDB();
+			setupUsersTableIntoDB();
+			setupIssueTableIntoDB();
+		}else {
+			System.exit(0);
+		}
 	}
 
 	public static DBHandler getInstance() {
@@ -33,21 +36,19 @@ public final class DBHandler extends DBConfigs {
 		return dbHandler;
 	}
 
-	public void getConnection() {
-
-		String connectionStr = "jdbc:mysql://" + DBConfigs.DB_HOST + ":" + DBConfigs.DB_PORT + "/" + DBConfigs.DB_NAME;
+	public Boolean getConnection() {
 
 		try {
+			String connectionStr = "jdbc:mysql://" + DBConfigs.DB_HOST + ":" + DBConfigs.DB_PORT + "/" + DBConfigs.DB_NAME;
+
 			Class.forName(driver_connector);
-		} catch (ClassNotFoundException e) {
-			System.err.println("#DRIVER_CONNECTOR_ERROR : " + e.getMessage());
-		}
-		
-		try {
 			conn = DriverManager.getConnection(connectionStr, DBConfigs.DB_USER, DBConfigs.DB_PASS);
-		} catch (SQLException e) {
-			System.err.println("#DB_CONNECTION_ERROR : " + e.getMessage());
+			return true;
+		} catch (SQLException|ClassNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "Can't load database", "Database Error", JOptionPane.ERROR_MESSAGE);
+			//System.err.println("#DB_CONNECTION_ERROR : " + e.getMessage());
 		}
+		return false;
 	}
 	
 	private void setupBooksTableIntoDB() {
@@ -74,8 +75,6 @@ public final class DBHandler extends DBConfigs {
 		}
 	}
 	
-
-	
 	private void setupUsersTableIntoDB() {
 		// TODO Auto-generated method stub
 		String TABLE_NAME = "users";
@@ -99,7 +98,6 @@ public final class DBHandler extends DBConfigs {
 			
 		}
 	}
-
 
 	private void setupIssueTableIntoDB() {
 		// TODO Auto-generated method stub

@@ -1,6 +1,7 @@
  package application;
 	
 import dbConnect.DBHandler;
+import helpers.LibraryAssistantUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,12 +18,15 @@ public class Main extends Application {
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/styles/application.css").toExternalForm());
 			primaryStage.setScene(scene);
+			primaryStage.setTitle("Library Assistant Login");
 			primaryStage.show();
+			
+			LibraryAssistantUtil.setStageIcon(primaryStage);
 			
 			new Thread(new Runnable() {
 				
 				@Override
-				public void run() {
+				public void run() { 
 					DBHandler.getInstance();
 				}
 			}).start();

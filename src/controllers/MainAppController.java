@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.effects.JFXDepthManager;
 
 import dbConnect.DBHandler;
+import helpers.LibraryAssistantUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -38,6 +40,9 @@ import javafx.stage.StageStyle;
 public class MainAppController implements Initializable {
 
 	@FXML
+	private StackPane sp_root;
+
+	@FXML
 	private HBox hb_book_info, hb_user_info;
 
 	@FXML
@@ -45,9 +50,9 @@ public class MainAppController implements Initializable {
 
 	@FXML
 	private Label lab_book_name, lab_book_status, lab_author, lab_username, lab_email, lab_mobile;
-	
+
 	@FXML
-    private JFXListView<String> lv_issue_data;
+	private JFXListView<String> lv_issue_data;
 
 	DBHandler dbHandler;
 	Boolean isReady4Submission = false;
@@ -75,6 +80,23 @@ public class MainAppController implements Initializable {
 	@FXML
 	void loadShowUsersPage(ActionEvent event) {
 		loadWindow("/views/FXMLUsersTable.fxml", "Usres List");
+	}
+
+	@FXML
+    void loadFullScreen(ActionEvent event) {
+		Stage stage = ((Stage) sp_root.getScene().getWindow());
+		stage.setFullScreen(!stage.isFullScreen());
+    }
+
+	@FXML
+	void signoutBTNPushed(ActionEvent event) {
+		((Stage) hb_book_info.getScene().getWindow()).close();
+		loadWindow("/views/FXMLLogin.fxml", "Login");
+	}
+
+	@FXML
+	void menu_closeBTNPushed(ActionEvent event) {
+		((Stage) hb_book_info.getScene().getWindow()).close();
 	}
 
 	@FXML
@@ -152,7 +174,7 @@ public class MainAppController implements Initializable {
 	@SuppressWarnings("deprecation")
 	public void getInfoBookByID(String book_id) {
 		isReady4Submission = false;
-		
+
 		String query = "SELECT * FROM issue WHERE bookID = '" + book_id + "'";
 		ResultSet rs = dbHandler.execQuery(query);
 
@@ -164,27 +186,27 @@ public class MainAppController implements Initializable {
 				Timestamp mIssueTime = rs.getTimestamp("issueTime");
 				int mRenewCount = rs.getInt("renew_count");
 				issueList.add("---------------------------------Issue Information :---------------------------------");
-				issueList.add("\tIssue Date and Time : "+mIssueTime.toGMTString());
-				issueList.add("\tRenew Count : "+mRenewCount);
+				issueList.add("\tIssue Date and Time : " + mIssueTime.toGMTString());
+				issueList.add("\tRenew Count : " + mRenewCount);
 				issueList.add("---------------------------------Book Information :---------------------------------");
-				
+
 				query = "SELECT * FROM books WHERE id = '" + mBook_id + "'";
 				ResultSet rsBook = dbHandler.execQuery(query);
 				while (rsBook.next()) {
-					issueList.add("\tBook ID : "+rsBook.getString("id"));
-					issueList.add("\tTitle : "+rsBook.getString("title"));
-					issueList.add("\tAuthor : "+rsBook.getString("author"));
-					issueList.add("\tPublisher : "+rsBook.getString("publisher"));
+					issueList.add("\tBook ID : " + rsBook.getString("id"));
+					issueList.add("\tTitle : " + rsBook.getString("title"));
+					issueList.add("\tAuthor : " + rsBook.getString("author"));
+					issueList.add("\tPublisher : " + rsBook.getString("publisher"));
 				}
-				
+
 				issueList.add("---------------------------------User Information :---------------------------------");
 				query = "SELECT * FROM users WHERE id = '" + mUser_id + "'";
 				ResultSet rsUser = dbHandler.execQuery(query);
 				while (rsUser.next()) {
-					issueList.add("\tUser ID : "+rsUser.getString("id"));
-					issueList.add("\tUsername : "+rsUser.getString("username"));
-					issueList.add("\tMobile : "+rsUser.getString("mobile"));
-					issueList.add("\tEmail : "+rsUser.getString("email"));
+					issueList.add("\tUser ID : " + rsUser.getString("id"));
+					issueList.add("\tUsername : " + rsUser.getString("username"));
+					issueList.add("\tMobile : " + rsUser.getString("mobile"));
+					issueList.add("\tEmail : " + rsUser.getString("email"));
 				}
 				isReady4Submission = true;
 			}
@@ -243,86 +265,87 @@ public class MainAppController implements Initializable {
 		userClearCache();
 
 	}
-	
+
 	@FXML
-    void renewBTNPushed(ActionEvent event) {
+	void renewBTNPushed(ActionEvent event) {
 		if (!isReady4Submission) {
-    		Alert alert_err = new Alert(Alert.AlertType.ERROR);
+			Alert alert_err = new Alert(Alert.AlertType.ERROR);
 			alert_err.setHeaderText(null);
 			alert_err.setTitle("Failed");
 			alert_err.setContentText("Please select a book to renew!!");
 			alert_err.showAndWait();
 			return;
 		}
-		
+
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setHeaderText(null);
 		alert.setTitle("Confirm Renew Operation");
 		alert.setContentText("Are you sure want to renew the book ?");
 		Optional<ButtonType> response = alert.showAndWait();
-		
+
 		if (response.get() == ButtonType.OK) {
-			String issue_query = "UPDATE `issue` SET issueTime = CURRENT_TIMESTAMP, renew_count = renew_count+1  WHERE bookID = '" + tf_searcheBookByID.getText() + "'";
-			if (dbHandler.executeAction(issue_query)){
+			String issue_query = "UPDATE `issue` SET issueTime = CURRENT_TIMESTAMP, renew_count = renew_count+1  WHERE bookID = '"
+					+ tf_searcheBookByID.getText() + "'";
+			if (dbHandler.executeAction(issue_query)) {
 				Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
 				alert_info.setHeaderText(null);
 				alert_info.setTitle("Success");
 				alert_info.setContentText("Book has been Renewed.");
 				alert_info.showAndWait();
 				getInfoBookByID(tf_searcheBookByID.getText());
-			}else {
+			} else {
 				Alert alert_err = new Alert(Alert.AlertType.ERROR);
 				alert_err.setHeaderText(null);
 				alert_err.setTitle("Failed");
 				alert_err.setContentText("Renew has been Faild!!");
 				alert_err.showAndWait();
 			}
-		}else {
+		} else {
 			Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
 			alert_info.setHeaderText(null);
 			alert_info.setTitle("Cancelled");
 			alert_info.setContentText("Renew Operation cancelled!.");
 			alert_info.showAndWait();
 		}
-    }
+	}
 
-    @FXML
-    void submissionBTNPushed(ActionEvent event) {
-    	if (!isReady4Submission) {
-    		Alert alert_err = new Alert(Alert.AlertType.ERROR);
+	@FXML
+	void submissionBTNPushed(ActionEvent event) {
+		if (!isReady4Submission) {
+			Alert alert_err = new Alert(Alert.AlertType.ERROR);
 			alert_err.setHeaderText(null);
 			alert_err.setTitle("Failed");
 			alert_err.setContentText("Please select a book to submit!!");
 			alert_err.showAndWait();
 			return;
 		}
-    	
-    	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setHeaderText(null);
 		alert.setTitle("Confirm Issue Operation");
 		alert.setContentText("Are you sure want to return the book ?");
 		Optional<ButtonType> response = alert.showAndWait();
-		
+
 		if (response.get() == ButtonType.OK) {
 			String id = tf_searcheBookByID.getText();
-	    	String issue_query = "DELETE FROM `issue` WHERE bookID ='"+id+"'";
-	    	String books_query = "UPDATE `books` SET isAvail = true WHERE id = '" + id + "'";
-	    	
-	    	if (dbHandler.executeAction(issue_query) && dbHandler.executeAction(books_query)) {
-	    		Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
+			String issue_query = "DELETE FROM `issue` WHERE bookID ='" + id + "'";
+			String books_query = "UPDATE `books` SET isAvail = true WHERE id = '" + id + "'";
+
+			if (dbHandler.executeAction(issue_query) && dbHandler.executeAction(books_query)) {
+				Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
 				alert_info.setHeaderText(null);
 				alert_info.setTitle("Success");
 				alert_info.setContentText("Book has been submitted.");
 				alert_info.showAndWait();
 				lv_issue_data.getItems().clear();
-			}else {
+			} else {
 				Alert alert_err = new Alert(Alert.AlertType.ERROR);
 				alert_err.setHeaderText(null);
 				alert_err.setTitle("Failed");
 				alert_err.setContentText("Submission has been Faild!!");
 				alert_err.showAndWait();
 			}
-		}else {
+		} else {
 			Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
 			alert_info.setHeaderText(null);
 			alert_info.setTitle("Cancelled");
@@ -330,8 +353,7 @@ public class MainAppController implements Initializable {
 			alert_info.showAndWait();
 			lv_issue_data.getItems().clear();
 		}
-    }
-
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -350,6 +372,9 @@ public class MainAppController implements Initializable {
 			stage.setTitle(title);
 			stage.setScene(new Scene(parent));
 			stage.show();
+			
+
+			LibraryAssistantUtil.setStageIcon(stage);
 		} catch (IOException e) {
 			System.err.println("#Error_Message_loadPage : " + e.getLocalizedMessage());
 		}

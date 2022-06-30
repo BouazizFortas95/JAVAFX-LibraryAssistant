@@ -12,6 +12,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import helpers.LibraryAssistantUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -74,6 +75,8 @@ public class LoginController implements Initializable {
 			stage.setTitle("Library Assistant");
 			stage.setScene(new Scene(parent));
 			stage.show();
+
+			LibraryAssistantUtil.setStageIcon(stage);
 		} catch (IOException e) {
 			System.err.println("#Error_Message_LoginController_loadWindow : " + e.getLocalizedMessage());
 		}

@@ -18,22 +18,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainAppController">
+<StackPane fx:id="sp_root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="900.0" stylesheets="@../styles/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainAppController">
    <children>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="900.0">
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+                    <MenuItem mnemonicParsing="false" onAction="#menu_closeBTNPushed" text="Close" />
+                        <MenuItem mnemonicParsing="false" onAction="#signoutBTNPushed" text="logout" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem mnemonicParsing="false" onAction="#loadAddBookPage" text="Add Book" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadAddUserPage" text="Add User" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Views">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#loadShowBooksPage" text="Show Books" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadShowUsersPage" text="Show Users" />
+                        <MenuItem mnemonicParsing="false" onAction="#loadFullScreen" text="Full Screen" />
+                     </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />
@@ -43,9 +52,9 @@
             </MenuBar>
          </top>
          <right>
-            <VBox prefHeight="575.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="575.0" minWidth="200.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadAddUserPage" prefHeight="144.0" prefWidth="200.0" ripplerFill="#00ccff" text="ADD USER" textOverrun="CLIP">
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="95.0" minWidth="200.0" onAction="#loadAddUserPage" ripplerFill="#00ccff" text="ADD USER" textOverrun="CLIP">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="USER_PLUS" size="40" wrappingWidth="40.0" />
                      </graphic>
@@ -53,7 +62,7 @@
                         <Font name="Impact" size="20.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadAddBookPage" prefHeight="144.0" prefWidth="200.0" ripplerFill="#00ccff" text="ADD BOOK" textOverrun="CLIP">
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" minHeight="95.0" minWidth="200.0" onAction="#loadAddBookPage" ripplerFill="#00ccff" text="ADD BOOK" textOverrun="CLIP">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="40" wrappingWidth="40.0" />
                      </graphic>
@@ -61,7 +70,7 @@
                         <Font name="Impact" size="20.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadShowUsersPage" prefHeight="144.0" prefWidth="200.0" ripplerFill="#00ccff" text="SHOW USERS" textOverrun="CLIP">
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" minHeight="95.0" minWidth="200.0" onAction="#loadShowUsersPage" ripplerFill="#00ccff" text="SHOW USERS" textOverrun="CLIP">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="LIST_ALT" size="40" wrappingWidth="40.0" />
                      </graphic>
@@ -69,7 +78,7 @@
                         <Font name="Impact" size="20.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadShowBooksPage" prefHeight="144.0" prefWidth="200.0" ripplerFill="#00ccff" text="SOW BOOKS" textOverrun="CLIP">
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" minHeight="95.0" minWidth="200.0" onAction="#loadShowBooksPage" ripplerFill="#00ccff" text="SOW BOOKS" textOverrun="CLIP">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="LIST" size="40" wrappingWidth="40.0" />
                      </graphic>
@@ -77,9 +86,17 @@
                         <Font name="Impact" size="20.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadSettingsPage" prefHeight="144.0" prefWidth="200.0" ripplerFill="#00ccff" text="SETTINGS" textOverrun="CLIP">
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" minHeight="95.0" minWidth="200.0" onAction="#loadSettingsPage" ripplerFill="#00ccff" text="SETTINGS" textOverrun="CLIP">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="COGS" size="40" wrappingWidth="40.0" />
+                     </graphic>
+                     <font>
+                        <Font name="Impact" size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" minHeight="95.0" minWidth="200.0" onAction="#signoutBTNPushed" ripplerFill="#00ccff" text="LOGOUT" textOverrun="CLIP">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="40" wrappingWidth="40.0" />
                      </graphic>
                      <font>
                         <Font name="Impact" size="20.0" />
