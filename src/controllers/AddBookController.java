@@ -9,18 +9,22 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import dbConnect.DBHandler;
+import helpers.AlertMaker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.Book;
+import models.User;
 
 public class AddBookController implements Initializable {
 
 	@FXML
 	private AnchorPane rootPane;
-	
+
 	@FXML
 	private JFXTextField tf_book_id;
 
@@ -41,6 +45,7 @@ public class AddBookController implements Initializable {
 
 	private DBHandler dbHandler;
 	private ResultSet rs = null;
+	private Boolean isEditMode = Boolean.FALSE;
 
 	@FXML
 	void addBook(ActionEvent event) {
@@ -50,27 +55,40 @@ public class AddBookController implements Initializable {
 		String bookPublisher = tf_publisher.getText();
 
 		if (bookID.isEmpty() || bookAuthor.isEmpty() || bookTitle.isEmpty() || bookPublisher.isEmpty()) {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setHeaderText(null);
-			alert.setContentText("Please Enter in all fields!");
-			alert.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Please Enter in all fields!");
 			return;
 		}
+		
+		if (isEditMode) {
+			updateInfoBook();
+		}else {
+			insertInfoBook(bookID, bookAuthor, bookTitle, bookPublisher);
+		}
+	}
+
+	/**
+	 * @param bookID
+	 * @param bookAuthor
+	 * @param bookTitle
+	 * @param bookPublisher
+	 */
+	public void insertInfoBook(String bookID, String bookAuthor, String bookTitle, String bookPublisher) {
 		String query = "INSERT INTO `books` VALUES('" + bookID + "', '" + bookTitle + "', '" + bookAuthor + "', '"
 				+ bookPublisher + "', " + true + ")";
-		System.out.println(query);
 		if (dbHandler.executeAction(query)) {
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setHeaderText(null);
-			alert.setContentText("Successful indserted data of new book!");
-			alert.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Success", "Successful inserted data of new book!");
 		} else {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setHeaderText(null);
-			alert.setContentText("Please Enter in all fields!");
-			alert.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Please Enter a correct inputs!");
 		}
+	}
 
+	private void updateInfoBook() {
+		Book book = new Book(tf_book_id.getText(), tf_book_title.getText(), tf_book_author.getText(), tf_publisher.getText(), true);
+		if (dbHandler.updateBookFromDB(book)) {
+			AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Success", "Successful Updated data of book selected!");
+		}else {
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Can't Update data of book!!");
+		}
 	}
 
 	@FXML
@@ -101,4 +119,12 @@ public class AddBookController implements Initializable {
 
 	}
 
+	public void inflateUI(Book book) {
+		tf_book_id.setText(book.getId());
+		tf_book_id.setEditable(false);
+		tf_book_title.setText(book.getTitle());
+		tf_book_author.setText(book.getAuthor());
+		tf_publisher.setText(book.getPublisher());
+		isEditMode = Boolean.TRUE;
+	}
 }

@@ -16,7 +16,7 @@ public class Main extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/views/FXMLLogin.fxml"));
 			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/styles/application.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("/styles/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Library Assistant Login");
 			primaryStage.show();

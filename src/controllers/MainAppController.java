@@ -4,6 +4,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,11 +12,15 @@ import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.effects.JFXDepthManager;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 
 import dbConnect.DBHandler;
+import helpers.AlertMaker;
 import helpers.LibraryAssistantUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,15 +28,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * @author Bouaziz Fortas
@@ -41,6 +45,9 @@ public class MainAppController implements Initializable {
 
 	@FXML
 	private StackPane sp_root;
+
+	@FXML
+	private JFXHamburger hamberger;
 
 	@FXML
 	private HBox hb_book_info, hb_user_info;
@@ -53,45 +60,49 @@ public class MainAppController implements Initializable {
 
 	@FXML
 	private JFXListView<String> lv_issue_data;
+	
+	@FXML
+    private JFXDrawer drawer;
 
 	DBHandler dbHandler;
 	Boolean isReady4Submission = false;
 
 	@FXML
-	void loadAddBookPage(ActionEvent event) {
-		loadWindow("/views/FXMLAddBook.fxml", "Add Book");
+	void loadAddBookPage(ActionEvent event) throws MalformedURLException {
+		LibraryAssistantUtil.loadWindow(null, getClass().getResource("/views/FXMLAddBook.fxml"), "Add Book");
 	}
 
 	@FXML
-	void loadAddUserPage(ActionEvent event) {
-		loadWindow("/views/FXMLAddUser.fxml", "Add User");
+	void loadAddUserPage(ActionEvent event) throws MalformedURLException {
+		LibraryAssistantUtil.loadWindow(null, getClass().getResource("/views/FXMLAddUser.fxml"), "Add User");
 	}
 
 	@FXML
-	void loadSettingsPage(ActionEvent event) {
-		loadWindow("/views/FXMLSettings.fxml", "Settings");
+	void loadSettingsPage(ActionEvent event) throws MalformedURLException {
+		LibraryAssistantUtil.loadWindow(null, getClass().getResource("/views/FXMLSettings.fxml"), "Settings");
 	}
 
 	@FXML
-	void loadShowBooksPage(ActionEvent event) {
-		loadWindow("/views/FXMLBooksTable.fxml", "Books List");
+	void loadShowBooksPage(ActionEvent event) throws MalformedURLException {
+		LibraryAssistantUtil.loadWindow(null, getClass().getResource("/views/FXMLBooksTable.fxml"), "Books List");
 	}
 
 	@FXML
-	void loadShowUsersPage(ActionEvent event) {
-		loadWindow("/views/FXMLUsersTable.fxml", "Usres List");
+	void loadShowUsersPage(ActionEvent event) throws MalformedURLException {
+		LibraryAssistantUtil.loadWindow(null, getClass().getResource("/views/FXMLUsersTable.fxml"), "Usres List");
 	}
 
+
 	@FXML
-    void loadFullScreen(ActionEvent event) {
+	void signoutBTNPushed(ActionEvent event) throws MalformedURLException {
+		((Stage) hb_book_info.getScene().getWindow()).close();
+		LibraryAssistantUtil.loadWindow(null, getClass().getResource("/views/FXMLLogin.fxml"), "Login");
+	}
+	
+	@FXML
+	void loadFullScreen(ActionEvent event) {
 		Stage stage = ((Stage) sp_root.getScene().getWindow());
 		stage.setFullScreen(!stage.isFullScreen());
-    }
-
-	@FXML
-	void signoutBTNPushed(ActionEvent event) {
-		((Stage) hb_book_info.getScene().getWindow()).close();
-		loadWindow("/views/FXMLLogin.fxml", "Login");
 	}
 
 	@FXML
@@ -230,36 +241,20 @@ public class MainAppController implements Initializable {
 	void issueOperationBTNPUSHED(ActionEvent event) {
 		String userID = tf_user_id.getText();
 		String bookID = tf_book_id.getText();
-
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setHeaderText(null);
-		alert.setTitle("Confirm Issue Operation");
-		alert.setContentText("Are you sure want to issue te book " + lab_book_name.getText() + "\n to "
-				+ lab_username.getText() + " ?");
-		Optional<ButtonType> response = alert.showAndWait();
+		Optional<ButtonType> response = AlertMaker.getAlertMessageConfirmation("Confirm Issue Operation",
+				"Are you sure want to issue te book " + lab_book_name.getText() + "\n to " + lab_username.getText()
+						+ " ?");
 
 		if (response.get() == ButtonType.OK) {
 			String query_1 = "INSERT INTO `issue`(`bookID`, `userID`) VALUES ('" + bookID + "','" + userID + "')";
 			String query_2 = "UPDATE `books` SET isAvail = false WHERE id = '" + bookID + "'";
 			if (dbHandler.executeAction(query_1) && dbHandler.executeAction(query_2)) {
-				Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
-				alert_info.setHeaderText(null);
-				alert_info.setTitle("Successful");
-				alert_info.setContentText("Book Issue is Complet.");
-				alert_info.showAndWait();
+				AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Success", "Book Issue is Complet.");
 			} else {
-				Alert alert_err = new Alert(Alert.AlertType.ERROR);
-				alert_err.setHeaderText(null);
-				alert_err.setTitle("Error");
-				alert_err.setContentText("Issue Operation is Faild!!");
-				alert_err.showAndWait();
+				AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Issue Operation is Faild!!");
 			}
 		} else {
-			Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
-			alert_info.setHeaderText(null);
-			alert_info.setTitle("Cancelled");
-			alert_info.setContentText("Book Issue is Canceled.");
-			alert_info.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Cancelled", "Book Issue is Cancelled.");
 		}
 		bookClearCache();
 		userClearCache();
@@ -269,88 +264,49 @@ public class MainAppController implements Initializable {
 	@FXML
 	void renewBTNPushed(ActionEvent event) {
 		if (!isReady4Submission) {
-			Alert alert_err = new Alert(Alert.AlertType.ERROR);
-			alert_err.setHeaderText(null);
-			alert_err.setTitle("Failed");
-			alert_err.setContentText("Please select a book to renew!!");
-			alert_err.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Please select a book to renew!!");
 			return;
 		}
 
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setHeaderText(null);
-		alert.setTitle("Confirm Renew Operation");
-		alert.setContentText("Are you sure want to renew the book ?");
-		Optional<ButtonType> response = alert.showAndWait();
+		Optional<ButtonType> response = AlertMaker.getAlertMessageConfirmation("Confirm Renew Operation",
+				"Are you sure want to renew the book ?");
 
 		if (response.get() == ButtonType.OK) {
 			String issue_query = "UPDATE `issue` SET issueTime = CURRENT_TIMESTAMP, renew_count = renew_count+1  WHERE bookID = '"
 					+ tf_searcheBookByID.getText() + "'";
 			if (dbHandler.executeAction(issue_query)) {
-				Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
-				alert_info.setHeaderText(null);
-				alert_info.setTitle("Success");
-				alert_info.setContentText("Book has been Renewed.");
-				alert_info.showAndWait();
+				AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Success", "Book has been Renewed.");
 				getInfoBookByID(tf_searcheBookByID.getText());
 			} else {
-				Alert alert_err = new Alert(Alert.AlertType.ERROR);
-				alert_err.setHeaderText(null);
-				alert_err.setTitle("Failed");
-				alert_err.setContentText("Renew has been Faild!!");
-				alert_err.showAndWait();
+				AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Renew has been Faild!!");
 			}
 		} else {
-			Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
-			alert_info.setHeaderText(null);
-			alert_info.setTitle("Cancelled");
-			alert_info.setContentText("Renew Operation cancelled!.");
-			alert_info.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Cancelled", "Renew Operation cancelled!.");
 		}
 	}
 
 	@FXML
 	void submissionBTNPushed(ActionEvent event) {
 		if (!isReady4Submission) {
-			Alert alert_err = new Alert(Alert.AlertType.ERROR);
-			alert_err.setHeaderText(null);
-			alert_err.setTitle("Failed");
-			alert_err.setContentText("Please select a book to submit!!");
-			alert_err.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Please select a book to submit!!");
 			return;
 		}
 
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setHeaderText(null);
-		alert.setTitle("Confirm Issue Operation");
-		alert.setContentText("Are you sure want to return the book ?");
-		Optional<ButtonType> response = alert.showAndWait();
+		Optional<ButtonType> response = AlertMaker.getAlertMessageConfirmation("Confirm Submission Operation",
+				"Are you sure want to return the book ?");
 
 		if (response.get() == ButtonType.OK) {
 			String id = tf_searcheBookByID.getText();
 			String issue_query = "DELETE FROM `issue` WHERE bookID ='" + id + "'";
 			String books_query = "UPDATE `books` SET isAvail = true WHERE id = '" + id + "'";
-
 			if (dbHandler.executeAction(issue_query) && dbHandler.executeAction(books_query)) {
-				Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
-				alert_info.setHeaderText(null);
-				alert_info.setTitle("Success");
-				alert_info.setContentText("Book has been submitted.");
-				alert_info.showAndWait();
+				AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Success", "Book has been submitted.");
 				lv_issue_data.getItems().clear();
 			} else {
-				Alert alert_err = new Alert(Alert.AlertType.ERROR);
-				alert_err.setHeaderText(null);
-				alert_err.setTitle("Failed");
-				alert_err.setContentText("Submission has been Faild!!");
-				alert_err.showAndWait();
+				AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Submission has been Faild!!");
 			}
 		} else {
-			Alert alert_info = new Alert(Alert.AlertType.INFORMATION);
-			alert_info.setHeaderText(null);
-			alert_info.setTitle("Cancelled");
-			alert_info.setContentText("Submission Operation cancelled!.");
-			alert_info.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Cancelled", "Submission Operation cancelled!.");
 			lv_issue_data.getItems().clear();
 		}
 	}
@@ -362,22 +318,32 @@ public class MainAppController implements Initializable {
 		JFXDepthManager.setDepth(hb_user_info, 1);
 
 		dbHandler = DBHandler.getInstance();
+
+		initDrawer();
 	}
 
-	private void loadWindow(String path, String title) {
-		// TODO Auto-generated method stub
+	private void initDrawer() {
 		try {
-			Parent parent = FXMLLoader.load(getClass().getResource(path));// FXMLLoader.load(getClass().getResource("/views/FXMLMainApp.fxml"));
-			Stage stage = new Stage(StageStyle.DECORATED);
-			stage.setTitle(title);
-			stage.setScene(new Scene(parent));
-			stage.show();
-			
-
-			LibraryAssistantUtil.setStageIcon(stage);
+			VBox toolBar = FXMLLoader.load(getClass().getResource("/views/FXMLSideBar.fxml"));
+			drawer.setSidePane(toolBar);
+			drawer.setDefaultDrawerSize(200);
 		} catch (IOException e) {
-			System.err.println("#Error_Message_loadPage : " + e.getLocalizedMessage());
+			System.err.println("#Error_Message_initDrawer : " + e.getLocalizedMessage());
 		}
+
+		HamburgerSlideCloseTransition hTransition = new HamburgerSlideCloseTransition(hamberger);
+		hTransition.setRate(-1);
+		hamberger.addEventHandler(MouseEvent.MOUSE_CLICKED, (ev) ->{
+			
+				hTransition.setRate(hTransition.getRate() * -1);
+				hTransition.play();
+				
+				if (drawer.isClosed()) {
+					drawer.open();
+				}else {
+					drawer.close();
+				}
+		});
 	}
 
 }

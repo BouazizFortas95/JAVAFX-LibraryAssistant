@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,6 +15,15 @@
             <TableColumn fx:id="col_mobile" prefWidth="160.0" text="MOBILE" />
             <TableColumn fx:id="col_email" prefWidth="195.0" text="EMAIL" />
         </columns>
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#refreshUsersTableBTNPushed" text="Refresh" />
+                  <MenuItem mnemonicParsing="false" onAction="#editUserInfoBTNPushed" text="Edit" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteUserInfoBTNPushed" text="Delete" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
       </TableView>
    </children>
 </AnchorPane>

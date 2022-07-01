@@ -19,7 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import models.Setting;
@@ -31,6 +31,9 @@ import models.Setting;
 public class LoginController implements Initializable {
 
 
+	@FXML
+	private AnchorPane anchorPane;
+	
 	@FXML
 	private JFXTextField tf_username;
 
@@ -54,11 +57,13 @@ public class LoginController implements Initializable {
 			closeStage();
 			loadWindow();
 		}else{
-			Alert alert_err = new Alert(Alert.AlertType.ERROR);
-			alert_err.setHeaderText(null);
-			alert_err.setTitle("Error");
-			alert_err.setContentText("Login Operation is Faild!!, Please Try Again with correct inputs.");
-			alert_err.showAndWait();
+			tf_username.getStyleClass().add("wrong-auth");
+			pf_password.getStyleClass().add("wrong-auth");
+//			Alert alert_err = new Alert(Alert.AlertType.ERROR);
+//			alert_err.setHeaderText(null);
+//			alert_err.setTitle("Error");
+//			alert_err.setContentText("Login Operation is Faild!!, Please Try Again with correct inputs.");
+//			alert_err.showAndWait();
 		}
 	}
 
@@ -79,6 +84,7 @@ public class LoginController implements Initializable {
 			LibraryAssistantUtil.setStageIcon(stage);
 		} catch (IOException e) {
 			System.err.println("#Error_Message_LoginController_loadWindow : " + e.getLocalizedMessage());
+			e.printStackTrace();
 		}
 	}
 

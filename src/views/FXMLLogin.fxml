@@ -3,40 +3,52 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../styles/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+<AnchorPane fx:id="anchorPane" prefHeight="500.0" prefWidth="399.0" styleClass="root" stylesheets="@../styles/dark-app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <children>
-      <VBox layoutX="116.0" layoutY="52.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER" layoutX="116.0" layoutY="52.0" prefHeight="500.0" prefWidth="399.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="102.0" prefWidth="600.0" style="-fx-background-color: #164A6B;">
+            <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../images/library%20Assitant.png" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="319.0" spacing="20.0">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
                <children>
-                  <Label text="Library Asistant Login" textFill="WHITE">
-                     <font>
-                        <Font name="Gabriola" size="48.0" />
-                     </font>
-                  </Label>
+                  <FontAwesomeIconView glyphName="USER" size="30" styleClass="glyph-icon" />
+                  <JFXTextField fx:id="tf_username" alignment="CENTER" labelFloat="true" prefHeight="30.0" prefWidth="250.0" promptText="Username" styleClass="text-field">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXTextField>
                </children>
             </HBox>
-            <JFXTextField fx:id="tf_username" alignment="CENTER" focusColor="#164a6b" labelFloat="true" prefHeight="60.0" prefWidth="520.0" promptText="Username">
+            <HBox alignment="CENTER" prefHeight="45.0" prefWidth="319.0" spacing="20.0">
                <VBox.margin>
-                  <Insets bottom="20.0" left="100.0" right="100.0" top="40.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
-            </JFXTextField>
-            <JFXPasswordField fx:id="pf_password" alignment="CENTER" focusColor="#164a6b" labelFloat="true" prefHeight="60.0" prefWidth="600.0" promptText="Password" styleClass="jfx-text-field">
-               <VBox.margin>
-                  <Insets bottom="20.0" left="100.0" right="100.0" top="20.0" />
-               </VBox.margin>
-            </JFXPasswordField>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0">
                <children>
-                  <JFXButton onAction="#loginBTNPushed" prefHeight="50.0" prefWidth="150.0" text="Login" />
-                  <JFXButton onAction="#cancelBTNPushed" prefHeight="50.0" prefWidth="150.0" text="Cancel" />
+                  <FontAwesomeIconView glyphName="KEY" size="30" styleClass="glyph-icon" />
+                  <JFXPasswordField fx:id="pf_password" alignment="CENTER" labelFloat="true" prefHeight="30.0" prefWidth="250.0" promptText="Password" styleClass="text-field" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <JFXButton onAction="#loginBTNPushed" prefHeight="40.0" prefWidth="150.0" styleClass="login-button" text="Login" />
+                  <JFXButton onAction="#cancelBTNPushed" prefHeight="40.0" prefWidth="150.0" styleClass="login-button" text="Cancel" />
                </children>
             </HBox>
          </children>

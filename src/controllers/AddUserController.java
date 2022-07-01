@@ -10,12 +10,15 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import dbConnect.DBHandler;
+import helpers.AlertMaker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import models.Book;
+import models.User;
 
 /**
  * @author Bouaziz Fortas
@@ -45,6 +48,8 @@ public class AddUserController implements Initializable {
 	private JFXButton btn_cancel;
 
 	private DBHandler dbHandler;
+	
+	Boolean isEditMode = Boolean.FALSE;
 
 	@FXML
 	void addUser(ActionEvent event) {
@@ -55,25 +60,40 @@ public class AddUserController implements Initializable {
 
 		Boolean flag = userID.isEmpty() || username.isEmpty() || mobile.isEmpty() || email.isEmpty();
 		if (flag) {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setHeaderText(null);
-			alert.setContentText("Please Enter in all fields!");
-			alert.showAndWait();
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Please Enter in all fields!");
 			return;
 		}
-
-		String query = "INSERT INTO `users` VALUES('" + userID + "', '" + username + "', '" + mobile + "', '" + email + "')";
-		System.out.println(query);
-		if (dbHandler.executeAction(query)) {
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setHeaderText(null);
-			alert.setContentText("Successful indserted data of new user!");
-			alert.showAndWait();
+		
+		if (isEditMode) {
+			updateInfoUser();
 		} else {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setHeaderText(null);
-			alert.setContentText("Please Enter in all fields!");
-			alert.showAndWait();
+			insertInfoUser(userID, username, mobile, email);
+		}
+
+		
+	}
+
+	/**
+	 * @param userID
+	 * @param username
+	 * @param mobile
+	 * @param email
+	 */
+	public void insertInfoUser(String userID, String username, String mobile, String email) {
+		String query = "INSERT INTO `users` VALUES('" + userID + "', '" + username + "', '" + mobile + "', '" + email + "')";
+		if (dbHandler.executeAction(query)) {
+			AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Success", "Successful indserted data of new user!");
+		} else {
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Errror", "This user information can't be added!!");
+		}
+	}
+
+	private void updateInfoUser() {
+		User user = new User(tf_user_id.getText(), tf_username.getText(), tf_mobile.getText(), tf_email.getText());
+		if (dbHandler.updateUserFromDB(user)) {
+			AlertMaker.getAlertMessage(Alert.AlertType.INFORMATION, "Success", "Successful Updated data of user selected!");
+		}else {
+			AlertMaker.getAlertMessage(Alert.AlertType.ERROR, "Error", "Can't Update data of this user!!");
 		}
 	}
 
@@ -87,6 +107,15 @@ public class AddUserController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		dbHandler = DBHandler.getInstance();
+	}
+
+	public void inflateUI(User user) {
+		tf_user_id.setText(user.getId());
+		tf_user_id.setEditable(false);
+		tf_username.setText(user.getUsername());
+		tf_mobile.setText(user.getMobile());
+		tf_email.setText(user.getEmail());
+		isEditMode = Boolean.TRUE;
 	}
 
 }

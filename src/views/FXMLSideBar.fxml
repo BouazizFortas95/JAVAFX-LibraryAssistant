@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="200.0" stylesheets="@../styles/dark-app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SideBarController">
+   <children>
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadAddUserPage" prefHeight="600.0" prefWidth="200.0" ripplerFill="#00ccff" styleClass="toolbar-button" text="ADD USER" textOverrun="CLIP">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="USER_PLUS" size="40" wrappingWidth="40.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadAddBookPage" prefHeight="600.0" prefWidth="200.0" ripplerFill="#00ccff" styleClass="toolbar-button" text="ADD BOOK" textOverrun="CLIP">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="BOOK" size="40" wrappingWidth="40.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadShowUsersPage" prefHeight="600.0" prefWidth="200.0" ripplerFill="#00ccff" styleClass="toolbar-button" text="SHOW USERS" textOverrun="CLIP">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="USERS" size="40" wrappingWidth="40.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadShowBooksPage" prefHeight="600.0" prefWidth="200.0" ripplerFill="#00ccff" styleClass="toolbar-button" text="SOW BOOKS" textOverrun="CLIP">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="LIST_ALT" size="40" wrappingWidth="40.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#loadSettingsPage" prefHeight="600.0" prefWidth="200.0" ripplerFill="#00ccff" styleClass="toolbar-button" text="SETTINGS" textOverrun="CLIP">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="COGS" size="40" wrappingWidth="40.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="TOP" ellipsisString="" onAction="#signoutBTNPushed" prefHeight="600.0" prefWidth="200.0" ripplerFill="#00ccff" styleClass="toolbar-button" text="LOGOUT" textOverrun="CLIP">
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="40" wrappingWidth="40.0" />
+         </graphic>
+      </JFXButton>
+   </children>
+</VBox>
