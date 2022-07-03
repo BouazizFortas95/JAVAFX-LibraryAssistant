@@ -12,13 +12,11 @@ import dbConnect.DBHandler;
 import helpers.AlertMaker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.Book;
-import models.User;
 
 public class AddBookController implements Initializable {
 

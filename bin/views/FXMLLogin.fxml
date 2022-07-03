@@ -47,8 +47,16 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <JFXButton onAction="#loginBTNPushed" prefHeight="40.0" prefWidth="150.0" styleClass="login-button" text="Login" />
-                  <JFXButton onAction="#cancelBTNPushed" prefHeight="40.0" prefWidth="150.0" styleClass="login-button" text="Cancel" />
+                  <JFXButton onAction="#loginBTNPushed" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Login">
+	                  <graphic>
+	                     <FontAwesomeIconView fill="WHITE" glyphName="SIGN_IN" size="20" />
+	                  </graphic>
+                  </JFXButton>
+                  <JFXButton onAction="#cancelBTNPushed" prefHeight="40.0" prefWidth="150.0" styleClass="main-button" text="Cancel">
+                  <graphic>
+	                     <FontAwesomeIconView fill="WHITE" glyphName="TIMES_CIRCLE" size="20" />
+	                </graphic>
+                  </JFXButton>
                </children>
             </HBox>
          </children>

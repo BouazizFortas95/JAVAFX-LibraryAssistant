@@ -42,4 +42,5 @@ public class LibraryAssistantUtil {
 			System.err.println("#Error_Message_loadPage : " + e.getLocalizedMessage());
 		}
 	}
+	
 }

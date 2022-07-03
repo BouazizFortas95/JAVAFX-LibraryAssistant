@@ -12,6 +12,7 @@ import helpers.AlertMaker;
 import helpers.LibraryAssistantUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,9 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import models.Book;
 import models.User;
-import javafx.event.ActionEvent;
 
 public class UsersTableController implements Initializable {
 	@FXML

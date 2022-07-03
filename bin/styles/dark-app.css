@@ -1,7 +1,7 @@
 *{
 	-fx-primary : #2A2E37;
-	-fx-secondary : #FFFF8D;
-	-fx-primary-text : #B2B2B2;
+	-fx-secondary : #F4EC02;
+	-fx-primary-text : #FDFDFD;
 	-fx-danger: #FF3333;
 	}
 
@@ -13,24 +13,28 @@
 	-fx-fill: -fx-primary-text;
 }
 
-.button{
+.main-button{
 	-fx-text-fill: -fx-primary-text;
 	-fx-background-color: -fx-primary;
-}
-
-.login-button{
 	-fx-border-color: -fx-secondary;
 	-fx-border-radius : 20px;
 	-fx-background-radius: 20px;
 	-fx-font-size : 13pt;
 }
 
-.login-button:hover{
+.main-button:hover{
 	-fx-border-color: -fx-secondary;
 	-fx-background-color: -fx-secondary;
+	-fx-text-fill: -fx-primary;
+	-fx-fill: -fx-primary;
+}
+
+.main-button:hover .glyph-icon{
+	-fx-fill: -fx-primary;
 }
 
 .text-field{
+	-fx-prompt-text-fill: #AAABBB ;
 	-fx-text-fill: -fx-primary-text;
 	-fx-font-size : 13pt;
 	-jfx-focus-color: -fx-secondary;
@@ -75,7 +79,8 @@
 }
 
 .toolbar-button{
-	-fx-background-color: derive(-fx-primary, 20%) ;
+	-fx-background-color: derive(-fx-primary, 20%);
+	-fx-text-fill : -fx-primary-text
 }
 
 
@@ -88,14 +93,36 @@
 	-fx-fill : -fx-primary;
 }
 
+/*Text Styling */
+
+.main-text{
+	-fx-text-fill : -fx-secondary;
+	-fx-font-family: System;
+	-fx-font-size: 13pt;
+	-fx-text-alignment: center;
+}
+
+.cards{
+	-fx-display: flex ;
+}
+.card{
+	-fx-background-color: derive(-fx-primary, 20%) ;
+	-fx-border-color: -fx-secondary;
+	-fx-background-radius: 20px;
+	-fx-border-radius: 20px;
+}
 
 
+.dialog{
+	-fx-background-color: derive(-fx-primary, 20%);
+	-fx-background-radius: 20px;
+	-fx-border-radius: 20px;
+	-fx-border-color: -fx-secondary;
+}
 
-
-
-
-
-
+.dialog .label{
+	-fx-text-fill: -fx-secondary ;
+}
 
 
 
