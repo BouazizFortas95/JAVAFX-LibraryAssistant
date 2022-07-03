@@ -19,7 +19,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
 <StackPane fx:id="sp_root" styleClass="root" stylesheets="@../styles/dark-app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainAppController">
    <children>
@@ -59,60 +58,65 @@
                <children>
                   <JFXTabPane prefHeight="575.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <tabs>
-                        <Tab text="BOOK ISSUE">
+                        <Tab fx:id="tab_book_issue" text="BOOK ISSUE">
                           <content>
                             <AnchorPane fx:id="ap_issue" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="900.0">
                                  <children>
-                                    <VBox  layoutX="7.0" prefHeight="515.0" prefWidth="900.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
+                                    <VBox layoutX="7.0" prefHeight="515.0" prefWidth="900.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
                                        <children>
                                           <HBox fx:id="hb_book_info" alignment="CENTER" prefHeight="200.0" prefWidth="820.0">
                                              <children>
                                                 <VBox alignment="CENTER" spacing="20.0">
                                                    <children>
                                                       <FontAwesomeIconView glyphName="BOOK" size="48" />
-                                                      <JFXTextField fx:id="tf_book_id" focusColor="#164a6b" labelFloat="true" onAction="#getBookInfo" prefHeight="40.0" prefWidth="300.0" promptText="Enter Book ID" styleClass="jfx-text-field">
-                                                </JFXTextField>
+                                                      <JFXTextField fx:id="tf_book_id" focusColor="#164a6b" labelFloat="true" onAction="#getBookInfo" prefHeight="40.0" prefWidth="300.0" promptText="Book ID" styleClass="jfx-text-field" />
                                                    </children>
                                                 </VBox>
-                                                <VBox alignment="CENTER" prefHeight="112.0" prefWidth="500.0">
+                                                <StackPane fx:id="book_info_container">
                                                    <HBox.margin>
-                                                      <Insets bottom="20.0" left="20.0" top="20.0" />
+                                                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                                    </HBox.margin>
                                                    <children>
-                                                      <Label fx:id="lab_book_name" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" text="Book Title" />
-                                                      <Label fx:id="lab_author" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" text="Author" />
-                                                      <Label fx:id="lab_book_status" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" text="Publisher" />
+                                                      <VBox alignment="CENTER" prefHeight="113.0" prefWidth="500.0">
+                                                         <children>
+                                                            <Label fx:id="lab_book_name" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" />
+                                                            <Label fx:id="lab_author" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" />
+                                                            <Label fx:id="lab_book_status" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" />
+                                                         </children>
+                                                      </VBox>
                                                    </children>
-                                                </VBox>
-                                             </children>
-                                             <VBox.margin>
-                                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                             </VBox.margin>
-                                          </HBox>
-                                          <HBox fx:id="hb_user_info" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="190.0" prefWidth="700.0">
-                                             <children>
-                                                <VBox alignment="CENTER" spacing="20.0">
-                                                   <children>
-                                                      <FontAwesomeIconView glyphName="USER" size="48" />
-                                                      <JFXTextField fx:id="tf_user_id" focusColor="#164a6b" labelFloat="true" onAction="#getUserInfo" prefHeight="40.0" prefWidth="300.0" promptText="Enter User ID" />
-                                                   </children>
-                                                </VBox>
-                                                <VBox alignment="CENTER" prefHeight="113.0" prefWidth="500.0">
-                                                   <HBox.margin>
-                                                      <Insets bottom="20.0" left="20.0" top="20.0" />
-                                                   </HBox.margin>
-                                                   <children>
-                                                      <Label fx:id="lab_username" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" text="User Name" />
-                                                      <Label fx:id="lab_mobile" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" text="Mobile" />
-                                                      <Label fx:id="lab_email" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" text="Email" />
-                                                 	</children>
-                                                </VBox>
+                                                </StackPane>
                                              </children>
                                              <VBox.margin>
                                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <HBox alignment="CENTER" prefHeight="39.0" prefWidth="820.0">
+                                          <HBox fx:id="hb_user_info" alignment="CENTER" prefHeight="200.0" prefWidth="820.0">
+                                             <children>
+                                                <VBox alignment="CENTER" spacing="20.0">
+                                                   <children>
+                                                      <FontAwesomeIconView glyphName="USER" size="48" />
+                                                      <JFXTextField fx:id="tf_user_id" focusColor="#164a6b" labelFloat="true" onAction="#getUserInfo" prefHeight="40.0" prefWidth="300.0" promptText="Enter User ID" styleClass="jfx-text-field" />
+                                                   </children>
+                                                </VBox>
+                                                <StackPane fx:id="user_info_container">
+                                                <VBox alignment="CENTER" prefHeight="113.0" prefWidth="500.0">
+                                                   <HBox.margin>
+                                                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                                   </HBox.margin>
+                                                   <children>
+                                                      <Label fx:id="lab_username" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" />
+                                                      <Label fx:id="lab_mobile" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" />
+                                                      <Label fx:id="lab_email" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="500.0" styleClass="main-text" />
+                                                 	</children>
+                                                </VBox>
+                                                </StackPane>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <HBox alignment="CENTER" prefHeight="40.0" prefWidth="820.0">
                                              <children>
                                                 <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#issueOperationBTNPUSHED" prefHeight="40.0" prefWidth="150.0" ripplerFill="#00ccff" styleClass="main-button" text="Issue">
                                                    <graphic>
@@ -145,13 +149,10 @@
                                              </BorderPane.margin>
                                           </JFXTextField>
                                        </top>
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
                                        <center>
                                           <VBox BorderPane.alignment="CENTER">
                                              <children>
-                                                <HBox alignment="CENTER" prefHeight="300.0" prefWidth="860.0" spacing="10.0" styleClass="cards">
+                                                <HBox fx:id="hb_cards" alignment="CENTER" prefHeight="300.0" prefWidth="860.0" spacing="10.0" styleClass="cards">
                                                    <children>
                                                       <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="248.0" prefWidth="290.0" spacing="10.0" styleClass="card">
                                                          <HBox.margin>

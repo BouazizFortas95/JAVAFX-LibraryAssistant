@@ -25,11 +25,15 @@ import dbConnect.DBHandler;
 import helpers.AlertMaker;
 import helpers.LibraryAssistantUtil;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -44,7 +48,7 @@ import javafx.stage.Stage;
 public class MainAppController implements Initializable {
 
 	@FXML
-	private StackPane sp_root;
+	private StackPane sp_root, book_info_container, user_info_container;
 
 	@FXML
 	private AnchorPane anchorPane, ap_issue;
@@ -53,10 +57,13 @@ public class MainAppController implements Initializable {
 	private JFXHamburger hamberger;
 
 	@FXML
-	private HBox hb_book_info, hb_user_info;
+	private HBox hb_book_info, hb_user_info, hb_cards;
 
 	@FXML
 	private JFXTextField tf_book_id, tf_user_id, tf_searcheBookByID;
+	
+	@FXML
+	private Tab tab_book_issue;
 
 	@FXML
 	private Label lab_book_name, lab_book_status, lab_author, lab_username, lab_email, lab_mobile, lab_issue_time,
@@ -72,6 +79,7 @@ public class MainAppController implements Initializable {
 	DBHandler dbHandler;
 	Boolean isReady4Submission = false;
 	Boolean isAvail = false;
+	PieChart book_pie_chart, user_pie_chart;
 
 	@FXML
 	void loadAddBookPage(ActionEvent event) throws MalformedURLException {
@@ -122,12 +130,14 @@ public class MainAppController implements Initializable {
 		ResultSet rs = dbHandler.execQuery(query);
 		Boolean flag = false;
 		try {
-			while (rs.next()) {
+			if (rs.next()) {
 				String title = rs.getString("title");
 				String author = rs.getString("author");
 				isAvail = rs.getBoolean("isAvail");
 				flag = true;
 
+				setVisibleBooksGraph(false);
+				
 				lab_book_name.setText(title);
 				lab_author.setText(author);
 				String status = (isAvail) ? "Available" : "Not Available";
@@ -136,6 +146,7 @@ public class MainAppController implements Initializable {
 
 			if (!flag) {
 				bookClearCache();
+				setVisibleBooksGraph(true);
 			}
 		} catch (SQLException e) {
 			System.err.println("#Error_Message_getBookInfo : " + e.getLocalizedMessage());
@@ -159,12 +170,14 @@ public class MainAppController implements Initializable {
 		ResultSet rs = dbHandler.execQuery(query);
 		Boolean flag = false;
 		try {
-			while (rs.next()) {
+			if (rs.next()) {
 				String username = rs.getString("username");
 				String mobile = rs.getString("mobile");
 				String email = rs.getString("email");
 				flag = true;
 
+				setVisibleUsersGraph(false);
+				
 				lab_username.setText(username);
 				lab_mobile.setText(mobile);
 				lab_email.setText(email);
@@ -172,6 +185,7 @@ public class MainAppController implements Initializable {
 
 			if (!flag) {
 				userClearCache();
+				setVisibleUsersGraph(true);
 			}
 		} catch (SQLException e) {
 			System.err.println("#Error_Message_getBookInfo : " + e.getLocalizedMessage());
@@ -282,6 +296,7 @@ public class MainAppController implements Initializable {
 					if (dbHandler.executeAction(query_1) && dbHandler.executeAction(query_2)) {
 						AlertMaker.dialogShowMessage(sp_root, ap_issue, null, Arrays.asList(new JFXButton("Done!")),
 								"SUCCESS!", "Book Issue is Complet.");
+						refreshPieChartGraphes();
 					} else {
 						AlertMaker.dialogShowMessage(sp_root, ap_issue, null, Arrays.asList(new JFXButton("Okey!")),
 								"ERROR!", "Issue Operation is Faild!!");
@@ -311,6 +326,8 @@ public class MainAppController implements Initializable {
 					"Your data is not complet, Please try again!");
 		}
 
+		setVisibleBooksGraph(true);
+		setVisibleUsersGraph(true);
 	}
 
 	@FXML
@@ -354,12 +371,14 @@ public class MainAppController implements Initializable {
 			String id = tf_searcheBookByID.getText();
 			String issue_query = "DELETE FROM `issue` WHERE bookID ='" + id + "'";
 			String books_query = "UPDATE `books` SET isAvail = true WHERE id = '" + id + "'";
+			isReady4Submission = Boolean.FALSE;
 			if (dbHandler.executeAction(issue_query) && dbHandler.executeAction(books_query)) {
 				AlertMaker.dialogShowMessage(sp_root, anchorPane, tf_searcheBookByID, Arrays.asList(new JFXButton("Done!")), "SUCCESS!", "Book has been submitted.");
-				clearCards();
 			} else {
 				AlertMaker.dialogShowMessage(sp_root, anchorPane, tf_searcheBookByID, Arrays.asList(new JFXButton("Okey!")), "ERROR!", "Submission has been Faild!");
 			}
+			clearCards();
+			controlButtons(isReady4Submission);
 		});
 		
 		JFXButton noBtn = new JFXButton("NO");
@@ -380,8 +399,28 @@ public class MainAppController implements Initializable {
 
 		dbHandler = DBHandler.getInstance();
 
+//		setVisibleGraphes(true);
+		initPieChartGraphs();
 		initDrawer();
 		controlButtons(isReady4Submission);
+	}
+
+	private void initPieChartGraphs() {
+		 book_pie_chart = new PieChart(dbHandler.getBooksGraphStatistics());
+		 book_info_container.getChildren().add(book_pie_chart);
+		 
+		 user_pie_chart = new PieChart(dbHandler.getUsersGraphStatistics());
+		 user_info_container.getChildren().add(user_pie_chart);
+		 
+		 tab_book_issue.setOnSelectionChanged(new EventHandler<Event>() {
+			
+			@Override
+			public void handle(Event arg0) {
+				if (tab_book_issue.isSelected()) {
+					refreshPieChartGraphes();
+				}
+			}
+		});
 	}
 
 	private void initDrawer() {
@@ -413,10 +452,31 @@ public class MainAppController implements Initializable {
 		if (control) {
 			btn_renew.setDisable(false);
 			btn_submission.setDisable(false);
+			hb_cards.setVisible(true);
 		} else {
 			btn_renew.setDisable(true);
 			btn_submission.setDisable(true);
+			hb_cards.setVisible(false);
 		}
+	}
+	
+	private void setVisibleBooksGraph(Boolean isVisible) {
+		if (isVisible)
+			book_pie_chart.setOpacity(1);
+		else
+			book_pie_chart.setOpacity(0);
+	}
+	
+	private void setVisibleUsersGraph(Boolean isVisible) {
+		if (isVisible)
+			user_pie_chart.setOpacity(1);
+		else
+			user_pie_chart.setOpacity(0);
+	}
+	
+	private void refreshPieChartGraphes() {
+		user_pie_chart.setData(dbHandler.getUsersGraphStatistics());
+		book_pie_chart.setData(dbHandler.getBooksGraphStatistics());
 	}
 
 }

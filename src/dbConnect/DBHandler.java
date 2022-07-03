@@ -11,6 +11,9 @@ import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.DatabaseMetaData;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 import models.Book;
 import models.User;
 
@@ -238,5 +241,73 @@ public final class DBHandler extends DBConfigs {
 		}
 		return false;
 	}
+	
+	
+	
+	public ObservableList<PieChart.Data> getBooksGraphStatistics(){
+		ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+		String books_query = "SELECT COUNT(*) FROM books";
+		String issue_query = "SELECT COUNT(*) FROM issue";
+		
+		try {
+			ResultSet rs = execQuery(books_query);
+			if(rs.next()) {
+				int count = rs.getInt(1);
+				data.add(new PieChart.Data("Total Books ("+count+")", count));
+			}
+			
+			rs = execQuery(issue_query);
+			if(rs.next()) {
+				int count = rs.getInt(1);
+				data.add(new PieChart.Data("Issue Books ("+count+")", count));
+			}
+		} catch (SQLException e) {
+			System.err.println("#Error_DBHandler_getBookGraphStatistics : "+e.getLocalizedMessage());
+		}
+		return data;	
+	}
+	
+	
+	public ObservableList<PieChart.Data> getUsersGraphStatistics(){
+		ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+		String users_query = "SELECT COUNT(*) FROM users";
+		String issue_query = "SELECT COUNT(DISTINCT userID) FROM issue";
+		
+		try {
+			ResultSet rs = execQuery(users_query);
+			if(rs.next()) {
+				int count = rs.getInt(1);
+				data.add(new PieChart.Data("Total Users ("+count+")", count));
+			}
+			
+			rs = execQuery(issue_query);
+			if(rs.next()) {
+				int count = rs.getInt(1);
+				data.add(new PieChart.Data("Users with book ("+count+")", count));
+			}
+		} catch (SQLException e) {
+			System.err.println("#Error_DBHandler_getBookGraphStatistics : "+e.getLocalizedMessage());
+		}
+		return data;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

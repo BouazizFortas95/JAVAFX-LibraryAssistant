@@ -3,6 +3,7 @@
 	-fx-secondary : #F4EC02;
 	-fx-primary-text : #FDFDFD;
 	-fx-danger: #FF3333;
+	-fx-blue: #3333FF;
 	}
 
 .root{
@@ -124,7 +125,20 @@
 	-fx-text-fill: -fx-secondary ;
 }
 
+/*Pie Chart Graph Styling  */
 
+.data0.chart-pie{
+	-fx-pie-color: -fx-secondary;
+	-fx-background-color: derive(-fx-secondary, 20%);
+}
 
+.data1.chart-pie{
+	-fx-pie-color: -fx-blue;
+	-fx-background-color: derive(-fx-blue, 20%);
+}
+
+.chart-pie-label{
+	-fx-fill: aqua ;
+}
 
 
